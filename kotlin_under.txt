@@ -1,0 +1,85 @@
+package com.example.lab3
+
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.EdgeToEdge
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var editName: EditText
+    private lateinit var textname: TextView
+    private lateinit var textname1: TextView
+    private lateinit var textwinner: TextView
+    private lateinit var textmy: TextView
+    private lateinit var textrobot: TextView
+    private lateinit var radioButton1: RadioButton
+    private lateinit var radioButton2: RadioButton
+    private lateinit var radioButton3: RadioButton
+    private lateinit var button: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EdgeToEdge.enable(this)
+        setContentView(R.layout.activity_main)
+
+        // 連接 XML
+        editName = findViewById(R.id.edit_name)
+        textname = findViewById(R.id.textView)
+        textname1 = findViewById(R.id.textView2)
+        textwinner = findViewById(R.id.textView3)
+        textmy = findViewById(R.id.textView4)
+        textrobot = findViewById(R.id.textView5)
+        radioButton1 = findViewById(R.id.radioButton1)
+        radioButton2 = findViewById(R.id.radioButton2)
+        radioButton3 = findViewById(R.id.radioButton3)
+        button = findViewById(R.id.button)
+
+        button.setOnClickListener {
+
+            if (editName.text.isEmpty()) {
+                textname.text = "請輸入玩家姓名"
+            } else {
+                textname1.text = "name\n${editName.text}"
+
+                val playerChoice = when {
+                    radioButton1.isChecked -> "剪刀"
+                    radioButton2.isChecked -> "石頭"
+                    else -> "布"
+                }
+                textmy.text = "我方出拳\n$playerChoice"
+
+                val computerRandom = (0..2).random()
+                val computerChoice = when (computerRandom) {
+                    0 -> "剪刀"
+                    1 -> "石頭"
+                    else -> "布"
+                }
+                textrobot.text = "電腦出拳\n$computerChoice"
+
+                val winner = when {
+                    (radioButton1.isChecked && computerRandom == 2) ||
+                    (radioButton2.isChecked && computerRandom == 0) ||
+                    (radioButton3.isChecked && computerRandom == 1) -> {
+                        textname.text = "恭喜你獲勝了"
+                        editName.text.toString()
+                    }
+
+                    (radioButton1.isChecked && computerRandom == 1) ||
+                    (radioButton2.isChecked && computerRandom == 2) ||
+                    (radioButton3.isChecked && computerRandom == 0) -> {
+                        textname.text = "可惜，電腦獲勝"
+                        "電腦"
+                    }
+
+                    else -> {
+                        textname.text = "平局"
+                        "平手"
+                    }
+                }
+
+                textwinner.text = "勝利者\n$winner"
+            }
+        }
+    }
+}

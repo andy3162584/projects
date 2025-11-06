@@ -1,0 +1,110 @@
+package com.example.rps
+
+import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // ConstraintLayout
+        val layout = ConstraintLayout(this).apply {
+            id = R.id.main
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+        // EditText
+        val editName = EditText(this).apply {
+            id = R.id.edit_name
+            hint = "請輸入玩家姓名"
+            setEms(10)
+        }
+        layout.addView(editName)
+
+        // TextView 提示
+        val textView = TextView(this).apply {
+            id = R.id.textView
+            text = "請輸入姓名以開始遊戲"
+            textSize = 18f
+        }
+        layout.addView(textView)
+
+        // RadioGroup
+        val radioGroup = RadioGroup(this).apply {
+            id = R.id.radiogroup
+            orientation = RadioGroup.HORIZONTAL
+        }
+        val radio1 = RadioButton(this).apply { id = R.id.radioButton1; text = "剪刀"; isChecked = true }
+        val radio2 = RadioButton(this).apply { id = R.id.radioButton2; text = "石頭" }
+        val radio3 = RadioButton(this).apply { id = R.id.radioButton3; text = "布" }
+
+        radioGroup.addView(radio1)
+        radioGroup.addView(radio2)
+        radioGroup.addView(radio3)
+        layout.addView(radioGroup)
+
+        // Button
+        val button = Button(this).apply { id = R.id.button; text = "猜拳" }
+        layout.addView(button)
+
+        // 四個 TextView 顯示結果
+        val textView2 = TextView(this).apply { id = R.id.textView2; text = "名字 " }
+        val textView3 = TextView(this).apply { id = R.id.textView3; text = "勝利者 " }
+        val textView4 = TextView(this).apply { id = R.id.textView4; text = "我方出拳 " }
+        val textView5 = TextView(this).apply { id = R.id.textView5; text = "電腦出拳 " }
+
+        layout.addView(textView2)
+        layout.addView(textView3)
+        layout.addView(textView4)
+        layout.addView(textView5)
+
+        // 設定 ConstraintLayout 約束
+        val set = ConstraintSet()
+        set.clone(layout)
+
+        // EditText
+        set.connect(editName.id, ConstraintSet.TOP, layout.id, ConstraintSet.TOP, 44)
+        set.connect(editName.id, ConstraintSet.START, layout.id, ConstraintSet.START, 40)
+
+        // TextView
+        set.connect(textView.id, ConstraintSet.TOP, editName.id, ConstraintSet.BOTTOM, 8)
+        set.connect(textView.id, ConstraintSet.START, editName.id, ConstraintSet.START)
+
+        // RadioGroup
+        set.connect(radioGroup.id, ConstraintSet.TOP, textView.id, ConstraintSet.BOTTOM, 8)
+        set.connect(radioGroup.id, ConstraintSet.START, textView.id, ConstraintSet.START)
+
+        // Button
+        set.connect(button.id, ConstraintSet.TOP, radioGroup.id, ConstraintSet.BOTTOM, 8)
+        set.connect(button.id, ConstraintSet.START, radioGroup.id, ConstraintSet.START)
+
+        // TextView2
+        set.connect(textView2.id, ConstraintSet.TOP, button.id, ConstraintSet.BOTTOM, 8)
+        set.connect(textView2.id, ConstraintSet.START, button.id, ConstraintSet.START)
+
+        // TextView3
+        set.connect(textView3.id, ConstraintSet.TOP, textView2.id, ConstraintSet.TOP)
+        set.connect(textView3.id, ConstraintSet.START, textView2.id, ConstraintSet.END, 8)
+
+        // TextView4
+        set.connect(textView4.id, ConstraintSet.TOP, textView3.id, ConstraintSet.TOP)
+        set.connect(textView4.id, ConstraintSet.START, textView3.id, ConstraintSet.END, 8)
+
+        // TextView5
+        set.connect(textView5.id, ConstraintSet.TOP, textView4.id, ConstraintSet.TOP)
+        set.connect(textView5.id, ConstraintSet.START, textView4.id, ConstraintSet.END, 8)
+
+        set.applyTo(layout)
+
+        // 設定 Layout
+        setContentView(layout)
+    }
+}
